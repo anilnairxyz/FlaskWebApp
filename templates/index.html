@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Oasis Loss Model</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <script type=text/javascript>
+      $(function() {
+        $('#calculate').bind('click', function() {
+          $.getJSON('/gethurricaneloss', {
+            num_monte_carlo_samples: $('input[name="num_monte_carlo_samples"]').val(),
+            florida_landfall_rate: $('input[name="florida_landfall_rate"]').val(),
+            florida_mean: $('input[name="florida_mean"]').val(),
+            florida_stddev: $('input[name="florida_stddev"]').val(),
+            gulf_landfall_rate: $('input[name="gulf_landfall_rate"]').val(),
+            gulf_mean: $('input[name="gulf_mean"]').val(),
+            gulf_stddev: $('input[name="gulf_stddev"]').val()
+          }, function(data) {
+            $("#result").text(data.result);
+          });
+          return false;
+        });
+      });
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="header">
+              <h3 class="text-muted text-center">Oasis Hurricane Loss Model</h3>
+            </div>
+            <hr/>
+            <div class="well well-sm">
+                <form class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">Number of samples to run</span>
+                        <div class="col-md-2">
+                            <input id="no_samples" name="num_monte_carlo_samples" type="text" value="{{ request.form['no_samples'] }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">The annual rate of landfalls in Florida</span>
+                        <div class="col-md-2">
+                            <input id="florida_lf" name="florida_landfall_rate" type="text" value="{{ request.form['florida_lf'] }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">LogNormal parameters for economic loss (Florida)</span>
+                        <span class="col-md-1 text-right">&#956:</span>
+                        <div class="col-md-2">
+                            <input id="florida_mean" name="florida_mean" type="text" value="{{ request.form['florida_mean'] }}" class="form-control">
+                        </div>
+                        <span class="col-md-1 text-right">&#963:</span>
+                        <div class="col-md-2">
+                            <input id="florida_sigma" name="florida_stddev" type="text" value="{{ request.form['florida_sigma'] }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">The annual rate of landfalls in the Gulf States</span>
+                        <div class="col-md-2">
+                            <input id="gulf_lf" name="gulf_landfall_rate" type="text" value="{{ request.form['gulf_lf'] }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">LogNormal parameters for economic loss (Gulf States)</span>
+                        <span class="col-md-1 text-right">&#956:</span>
+                        <div class="col-md-2">
+                            <input id="gulf_mean" name="gulf_mean" type="text" value="{{ request.form['gulf_mean'] }}" class="form-control">
+                        </div>
+                        <span class="col-md-1 text-right">&#963:</span>
+                        <div class="col-md-2">
+                            <input id="gulf_sigma" name="gulf_stddev" type="text" value="{{ request.form['gulf_sigma'] }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" id="calculate" class="btn btn-primary btn-lg">Calculate</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <span class="col-md-6 text-right">Calculated average annual huricane loss ($ Billion)</span>
+                        <span id="result" class="col-md-1 text-right">0</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
