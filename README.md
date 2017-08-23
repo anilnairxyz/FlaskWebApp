@@ -8,9 +8,9 @@ model and returns the result as a json.
 Includes logging.
 
 ## To run
-* pip install -r requirements.txt
-* mkdir log
-* python app.py
+```pip install -r requirements.txt```<br>
+```mkdir log```<br>
+```python app.py```<br>
 
 ## To Test
-* curl -X GET http://localhost/
+```curl -X GET http://localhost:8000/```
