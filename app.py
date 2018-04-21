@@ -19,13 +19,13 @@ def _extract_parameters(arguments):
     :returns message: error message in case of failure
     :returns paramters: extracted parameters
     """
-    permitted_type = ({'num_monte_carlo_samples': int,
-                       'florida_landfall_rate': float,
-                       'florida_mean': float,
-                       'florida_stddev': float,
-                       'gulf_landfall_rate': float,
-                       'gulf_mean': float,
-                       'gulf_stddev': float})
+    permitted_type = ({'num_samples': int,
+                       'macroevent_rate': float,
+                       'macroevent_mean': float,
+                       'macroevent_stddev': float,
+                       'selfevent_rate': float,
+                       'selfevent_mean': float,
+                       'selfevent_stddev': float})
     parameters = {}
     for p in permitted_type:
         if p not in arguments:
@@ -53,8 +53,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/gethurricaneloss', methods=['GET'])
-def get_hurricaneloss():
+@app.route('/getloss', methods=['GET'])
+def get_loss():
     """
     The web service end point returning JSON responses
     responses:
@@ -72,7 +72,7 @@ def get_hurricaneloss():
         app.logger.error(response['message'])
         return make_response(jsonify(response), 400)
     try:
-        result = loss_model.estimate_us_hurricane_annual_loss(**parameters)
+        result = loss_model.estimate_annual_loss(**parameters)
         response = {'result': result, 'status': 'OK', 'message': 'OK'}
     except OverflowError:
         response = ({'result': 'Infinity',
