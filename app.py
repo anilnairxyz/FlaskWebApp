@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-A flask web service API that invokes loss_model for hurricane
+A flask web service API that invokes loss_model for market
 loss estimation
 """
 from flask import Flask, request, render_template, jsonify, make_response
